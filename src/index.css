@@ -1,0 +1,165 @@
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+   Tipografías del kit de marca (info/landing/Anton,Londrina_Solid.zip).
+   Anton  -> titulares de impacto (los headers del manual TodoxDecir).
+   Londrina Solid -> cuerpo, etiquetas y destacados, "en todas sus variantes"
+   como pide el manual de marca.
+--------------------------------------------------------------------------- */
+@font-face {
+  font-family: 'Anton';
+  src: url('/fonts/Anton-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Londrina Solid';
+  src: url('/fonts/LondrinaSolid-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Londrina Solid';
+  src: url('/fonts/LondrinaSolid-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Londrina Solid';
+  src: url('/fonts/LondrinaSolid-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Londrina Solid';
+  src: url('/fonts/LondrinaSolid-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-display: swap;
+}
+
+@theme {
+  /* Paleta muestreada directamente del manual de marca */
+  --color-paper: #faf5f3;
+  --color-paper-shade: #efe9e5;
+  --color-ink: #1f2018;
+  --color-red: #ef5341;
+  --color-red-soft: #f1786b;
+  --color-amber: #ffbc36;
+
+  /* "Pops" de color del manual: temas específicos / territorio */
+  --color-pop-purple: #7c279b;
+  --color-pop-clay: #ab5b41;
+  --color-pop-blue: #0856bd;
+  --color-pop-green: #438b70;
+
+  --font-display: 'Anton', 'Arial Narrow', sans-serif;
+  --font-brand: 'Londrina Solid', 'Trebuchet MS', sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-brand);
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Respeta a quien pide menos movimiento: sin reveal ni transiciones largas */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Textura de papel del manual: grano sutil generado con gradientes,
+     sin depender de una imagen externa. */
+  .paper-grain::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    background-image:
+      repeating-linear-gradient(
+        102deg,
+        rgb(31 32 24 / 0.035) 0px,
+        rgb(31 32 24 / 0.035) 1px,
+        transparent 1px,
+        transparent 5px
+      ),
+      repeating-linear-gradient(
+        14deg,
+        rgb(31 32 24 / 0.025) 0px,
+        rgb(31 32 24 / 0.025) 1px,
+        transparent 1px,
+        transparent 9px
+      );
+  }
+
+  /* "Destacamos los textos con un rectángulo atrás de la tipografía
+      para hacer un efecto de destacador." — manual de marca, p.3 */
+  .destacador {
+    background-color: var(--color-red);
+    color: var(--color-paper);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    padding: 0.05em 0.28em;
+  }
+
+  .destacador-amber {
+    background-color: var(--color-amber);
+    color: var(--color-ink);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    padding: 0.05em 0.28em;
+  }
+
+  /* Borde de papel rasgado, hecho con clip-path irregular */
+  .torn-bottom {
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      100% calc(100% - 14px),
+      92% 100%,
+      84% calc(100% - 9px),
+      73% calc(100% - 2px),
+      61% calc(100% - 13px),
+      50% calc(100% - 4px),
+      38% calc(100% - 15px),
+      27% calc(100% - 5px),
+      15% calc(100% - 12px),
+      6% calc(100% - 3px),
+      0 calc(100% - 11px)
+    );
+  }
+
+  .torn-top {
+    clip-path: polygon(
+      0 12px,
+      9% 3px,
+      19% 14px,
+      31% 5px,
+      44% 15px,
+      56% 4px,
+      68% 13px,
+      79% 2px,
+      90% 11px,
+      100% 4px,
+      100% 100%,
+      0 100%
+    );
+  }
+}
