@@ -2,25 +2,29 @@
 <html lang="es-CL">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/brand/todoxdecir.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#1F2018" />
+    <link rel="icon" type="image/png" href="/brand/todoxdecir.png" />
+    <link rel="apple-touch-icon" href="/brand/todoxdecir.png" />
 
+    <!--
+      Todo lo que hay entre seo:inicio y seo:fin lo reescribe
+      scripts/prerender.mjs con los datos de src/seo.ts, uno por ruta. Esto es
+      solo lo que se ve en `npm run dev`.
+    -->
+    <!--seo:inicio-->
     <title>todoxhacer — Pensar, disputar y organizar</title>
     <meta
       name="description"
-      content="Centro de pensamiento, laboratorio de innovación y acción territorial. Una nueva arquitectura para reconstruir incidencia, fortalecer el territorio y disputar el sentido común."
+      content="todoxhacer (TXH): centro de pensamiento, medio de comunicación y laboratorio de acción territorial en Chile."
     />
+    <link rel="canonical" href="https://todoxhacer.cl/" />
+    <!--seo:fin-->
 
-    <meta property="og:type" content="website" />
-    <meta property="og:locale" content="es_CL" />
-    <meta property="og:title" content="todoxhacer — Pensar, disputar y organizar" />
-    <meta
-      property="og:description"
-      content="Pensamiento, medios y acción territorial. Súmate al equipo fundador de TXH."
-    />
-    <meta property="og:image" content="/brand/todoxhacer-claro.png" />
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <meta name="author" content="todoxhacer" />
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+    <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt" />
 
     <link rel="preload" as="font" type="font/ttf" href="/fonts/Anton-Regular.ttf" crossorigin />
     <link
@@ -32,7 +36,7 @@
     />
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><!--app--></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -79,8 +79,43 @@ public/
 En `Columna`, el campo `imagen` es opcional: mientras sea `null` la tarjeta cae
 al bloque de color en vez de quedar rota.
 
-**Deploy:** es una SPA con rutas reales. El host tiene que reescribir todas las
-rutas a `index.html`, si no `/todoxdecir` da 404 al recargar.
+**Deploy:** en Vercel, configurado en `vercel.json`: `cleanUrls` sirve
+`dist/todoxdecir.html` en `/todoxdecir`, `www.todoxhacer.cl` redirige (301) a
+`todoxhacer.cl`, y cualquier otra ruta cae a `index.html`. Hay que agregar
+**los dos dominios** (con y sin www) al proyecto en Vercel.
+
+## SEO, previews y LLMs
+
+Los bots que arman la preview de un link (Meta/WhatsApp, LinkedIn, X) no
+ejecutan JavaScript, y la mayoría de los crawlers de LLMs tampoco. Por eso
+`npm run build` **prerenderiza cada ruta a HTML estático** con su contenido
+completo y sus metadatos; en el navegador React hidrata ese HTML.
+
+| Archivo                  | Qué hace                                                        |
+| ------------------------ | --------------------------------------------------------------- |
+| `src/seo.ts`             | Título, descripción, imagen y JSON-LD de cada ruta. `SITE_URL`. |
+| `src/entry-server.tsx`   | Render en servidor para el prerender.                           |
+| `scripts/prerender.mjs`  | Escribe el HTML por ruta + `sitemap.xml`, `robots.txt`, `llms.txt`, `llms-full.txt`. |
+| `scripts/og-images.py`   | Genera `public/og/*.jpg` (1200×630). Correr con `npm run og` si cambia el copy. |
+
+- **Datos estructurados:** `NGO` para TXH, con las tres áreas como
+  `subOrganization` (`ResearchOrganization`, `NewsMediaOrganization`,
+  `Organization`), las columnas como `OpinionNewsArticle`, la guía como
+  `DigitalDocument` y migas de pan.
+- **`robots.txt`** permite explícitamente a los crawlers de IA (GPTBot,
+  ClaudeBot, PerplexityBot, Google-Extended, etc.).
+- **`llms.txt` / `llms-full.txt`** se generan desde `content.ts`: resumen con
+  enlaces y versión completa en Markdown, para que los LLMs citen bien.
+
+Para agregar una ruta nueva: sumarla en `App.tsx` **y** en `metasPorRuta` de
+`src/seo.ts`; si no, no se prerenderiza ni entra al sitemap.
+
+Después del primer deploy, validar las previews con el
+[Sharing Debugger de Meta](https://developers.facebook.com/tools/debug/) y el
+[Post Inspector de LinkedIn](https://www.linkedin.com/post-inspector/) (también
+sirven para forzar a que refresquen una preview vieja), y dar de alta el sitio
+en [Google Search Console](https://search.google.com/search-console) enviando
+`https://todoxhacer.cl/sitemap.xml`.
 
 ## Sistema de diseño
 
